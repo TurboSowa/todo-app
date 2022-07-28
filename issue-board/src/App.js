@@ -1,58 +1,58 @@
 import { useState, useEffect } from "react";
 
-const getTodos = async () => {
-  const response = await fetch("http://localhost:8080/todos");
-  return await response.json();
-};
-
-const TodoList = (props) => {
+function App() {
   return (
-    <ul>
-      <h1>{props.title}</h1>
-      {props.todos.map((todo) => (
-        <li key={todo.id} onClick={() => props.toggleDone(todo)}>
-          {todo.id}: {todo.name}{" "}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const App = () => {
-  const [todos, setTodos] = useState([]);
-
-  useEffect(function () {
-    getTodos().then((todos) => {
-      setTodos(todos);
-    });
-  }, []);
-
-  const toggleDone = (toggledTodo) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo === toggledTodo) {
-          todo.is_done = !todo.is_done;
-          return todo;
-        }
-        return todo;
-      })
-    );
-  };
-
-  return (
-    <div>
-      <TodoList
-        title={"Todos"}
-        todos={todos.filter((todo) => !todo.is_done)}
-        toggleDone={toggleDone}
-      />
-      <TodoList
-        title={"Done"}
-        todos={todos.filter((todo) => todo.is_done)}
-        toggleDone={toggleDone}
-      />
+    <div className="display">
+      <Sidebar></Sidebar>
+      <ToDo></ToDo>
     </div>
   );
-};
+}
 
+function Sidebar() {
+  return (
+    <div className="sidebar">
+      <img
+        src="/logo192.png"
+        alt="placeholder logo"
+        className="placeholder-logo"
+      ></img>
+      <ul className="link-list">
+        <li>
+          <SidebarLink href="Board" text="Board"></SidebarLink>
+        </li>
+        <li>
+          <SidebarLink href="Issues" text="Issues"></SidebarLink>
+        </li>
+        <li>
+          <SidebarLink href="Add Issue" text={<b>+ Add Issue</b>}></SidebarLink>
+        </li>
+      </ul>
+      <img src="/logo512.png" alt="avatar" className="avatar"></img>
+    </div>
+  );
+}
+function SidebarLink(props) {
+  return (
+    <a className="sidebar-link" href={props.href}>
+      {props.text}
+    </a>
+  );
+}
+
+function ToDo() {
+  return (
+    <div className="tasks">
+      <ul>
+        To Do<li></li>
+      </ul>
+      <ul>
+        In Review<li></li>
+      </ul>
+      <ul>
+        In Progress<li></li>
+      </ul>
+    </div>
+  );
+}
 export default App;
